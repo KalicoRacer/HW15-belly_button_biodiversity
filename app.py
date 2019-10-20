@@ -3,6 +3,7 @@ import os
 import pandas as pd
 import numpy as np
 
+import sqlalchemy
 from sqlalchemy.ext.automap import automap_base
 from sqlalchemy.orm import Session
 from sqlalchemy import create_engine
@@ -17,7 +18,7 @@ app = Flask(__name__)
 # Database Setup
 #################################################
 
-app.config["SQLALCHEMY_DATABASE_URI"] = "sqlite:///db/bellybutton.sqlite"
+app.config["SQLALCHEMY_DATABASE_URI"] = os.environ.get('DATABASE_URL','') or "sqlite:///db/belly_button_biodiversity.sqlite"
 db = SQLAlchemy(app)
 
 # reflect an existing database into a new model
@@ -26,7 +27,7 @@ Base = automap_base()
 Base.prepare(db.engine, reflect=True)
 
 # Save references to each table
-Samples_Metadata = Base.classes.sample_metadata
+Samples_Metadata = Base.classes.samples_metadata
 Samples = Base.classes.samples
 
 
